@@ -310,24 +310,38 @@ footer { background:var(--deep);border-top:1px solid rgba(242,237,230,0.04);padd
 
 /* MOBILE */
 @media(max-width:900px) {
-  nav { padding:1.8rem 1.5rem; }
-  nav.nav-glass { padding:1.2rem 1.5rem; }
+  nav { padding:1rem 1.5rem; }
+  nav.nav-glass { padding:0.8rem 1.5rem; }
+  .nav-mark img { height:30px; }
   .nav-right .nav-link { display:none; }
   .nav-right .nav-book { display:none; }
   .nav-toggle { display:flex; }
-  .hero-left { width:12%;padding-left:1.5rem; }
-  .hero-photo { left:10%; }
+  nav {
+    background:rgba(13,12,11,0.32) !important;
+    backdrop-filter:blur(16px) saturate(140%) !important;
+    -webkit-backdrop-filter:blur(16px) saturate(140%) !important;
+    border-bottom:1px solid rgba(242,237,230,0.08) !important;
+  }
+  .hero-left { width:auto;padding:1.8rem 0 1.8rem 1.2rem; }
+  .hero-brand { font-size:0.5rem;letter-spacing:0.35em; }
+  .hero-edition { font-size:0.42rem;letter-spacing:0.2em; }
+  .hero-photo { left:7%; }
   .hero-photo::before { background:linear-gradient(to right,rgba(13,12,11,0.95) 0%,rgba(13,12,11,0.55) 60%,transparent 100%),linear-gradient(to top,rgba(13,12,11,0.7) 0%,transparent 40%); }
   .hero-slide:nth-of-type(1) { object-position:60% 18%; }
   .hero-slide:nth-of-type(2) { object-position:65% 14%; }
   .hero-slide:nth-of-type(3) { object-position:55% 12%; }
   .hero-slide:nth-of-type(4) { object-position:60% 8%; }
   .hero-slide:nth-of-type(5) { object-position:55% 8%; }
-  .hero-text { left:8%;bottom:14%;max-width:calc(100vw - 5rem); }
-  .hero-w-art { font-size:clamp(2rem,8vw,3rem); }
-  .hero-w-being { font-size:clamp(3.2rem,13vw,5.5rem); }
-  .hero-w-seen { font-size:clamp(1.6rem,6vw,2.5rem); }
-  .hero-corner { right:1.5rem; }
+  .hero-text { left:9%;bottom:auto;top:58%;transform:translateY(-50%);max-width:calc(100vw - 4.5rem); }
+  .hero-w-the { margin-bottom:0.6rem; }
+  .hero-w-art { font-size:clamp(1.6rem,7vw,2.4rem); }
+  .hero-w-being { font-size:clamp(2.6rem,11vw,4rem); }
+  .hero-w-seen { font-size:clamp(1.3rem,5vw,2rem);margin-top:0.3rem; }
+  .hero-meta { margin-top:1.6rem;gap:1.2rem; }
+  .hero-meta-text { font-size:0.5rem;line-height:1.6; }
+  .hero-cta { margin-top:1.4rem; }
+  .hero-cta a { padding:0.9rem 2.2rem;font-size:0.62rem; }
+  .hero-corner { display:none; }
   .hero-glass-card { display:none; }
   #belief { grid-template-columns:1fr;gap:2rem;padding:6rem 1.5rem 7rem; }
   .belief-label { display:none; }
@@ -381,6 +395,7 @@ footer { background:var(--deep);border-top:1px solid rgba(242,237,230,0.04);padd
     <a href="#about" class="nav-link">Story</a>
     <a href="#services" class="nav-link">Services</a>
     <a href="#gallery" class="nav-link">Work</a>
+    <a href="shop.html" class="nav-link">Shop</a>
     <a href="#booking" class="nav-book">Book Now</a>
   </div>
   <button class="nav-toggle" id="navToggle" aria-label="Open menu">
@@ -393,6 +408,7 @@ footer { background:var(--deep);border-top:1px solid rgba(242,237,230,0.04);padd
   <a href="#about">Story</a>
   <a href="#services">Services</a>
   <a href="#gallery">Work</a>
+  <a href="shop.html">Shop</a>
   <a href="#booking" class="mm-book">Book Now</a>
 </div>
 
@@ -459,7 +475,7 @@ footer { background:var(--deep);border-top:1px solid rgba(242,237,230,0.04);padd
 <!-- ABOUT -->
 <section id="about">
   <div class="about-visual sr">
-    <img src="images/unnamed (8).jpg"
+    <img src="images/lelani birth.jpeg"
          alt="Lelani Hair & Beauty SA — studio portrait">
     <div class="about-pullquote sr sr-d2">
       <span class="about-pullquote-mark">"</span>
