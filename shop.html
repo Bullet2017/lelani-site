@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Lelani Hair & Beauty SA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black:  #0D0C0B;
+  --off:    #F2EDE6;
+  --stone:  #A89880;
+  --mid:    #6B5F52;
+  --paper:  #EAE4DC;
+  --deep:   #181614;
+  --gold:   #C9A96E;
+  --glass-bg: rgba(242,237,230,0.08);
+  --glass-bg-strong: rgba(242,237,230,0.14);
+  --glass-border: rgba(242,237,230,0.22);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--off);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav { position:fixed;top:0;left:0;right:0;z-index:300;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 3rem;background:rgba(13,12,11,0.92);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid rgba(242,237,230,0.08); }
+.nav-mark { display:flex;align-items:center;text-decoration:none; }
+.nav-mark img { height:40px;width:auto;display:block; }
+.nav-right { display:flex;align-items:center;gap:3.5rem; }
+.nav-link { font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--off);text-decoration:none;opacity:0.55;transition:opacity .25s; }
+.nav-link:hover,.nav-link.active { opacity:1; }
+.nav-book { font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--off);text-decoration:none;border-bottom:1px solid rgba(242,237,230,0.4);padding-bottom:3px;transition:border-color .25s; }
+.nav-book:hover { border-color:var(--off); }
+
+.nav-toggle { display:none;flex-direction:column;justify-content:center;gap:5px;width:32px;height:32px;background:none;border:none;cursor:pointer;z-index:310; }
+.nav-toggle span { display:block;width:100%;height:1px;background:var(--off);transition:transform .3s,opacity .3s; }
+.nav-toggle.open span:nth-child(1) { transform:translateY(6px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity:0; }
+.nav-toggle.open span:nth-child(3) { transform:translateY(-6px) rotate(-45deg); }
+
+.mobile-menu {
+  position:fixed;inset:0;z-index:290;
+  background:rgba(13,12,11,0.55);
+  backdrop-filter:blur(22px) saturate(150%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2rem;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
+}
+.mobile-menu.open { opacity:1;visibility:visible; }
+.mobile-menu a { font-family:'Syne',sans-serif;font-weight:600;font-size:1.4rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--off);text-decoration:none;opacity:0.85; }
+.mobile-menu a.mm-book { color:var(--black);background:var(--off);padding:0.9rem 2.4rem;font-size:0.8rem;letter-spacing:0.25em;opacity:1; }
+
+/* SHOP HERO */
+.shop-hero { background:var(--black);padding:13rem 3rem 6rem;border-bottom:1px solid rgba(242,237,230,0.06); }
+.shop-hero-eyebrow { font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--stone);opacity:0.7;display:block;margin-bottom:1.2rem; }
+.shop-hero-hed { font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.8rem,7vw,6.5rem);letter-spacing:-0.04em;line-height:0.95;color:var(--off); }
+.shop-hero-sub { font-size:0.85rem;line-height:1.8;color:var(--off);opacity:0.5;max-width:42ch;margin-top:1.6rem; }
+
+/* CATEGORY FILTER */
+.shop-filters { background:var(--black);padding:0 3rem 3.5rem;display:flex;gap:1rem;flex-wrap:wrap; }
+.filter-btn {
+  font-family:'Syne',sans-serif;font-weight:600;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--off);background:var(--glass-bg);border:1px solid var(--glass-border);
+  padding:0.7rem 1.6rem;cursor:pointer;transition:background .25s,border-color .25s,color .25s;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.filter-btn:hover { background:var(--glass-bg-strong); }
+.filter-btn.active { background:var(--off);color:var(--black);border-color:var(--off); }
+
+/* PRODUCT GRID */
+.shop-grid-wrap { background:var(--paper);padding:5rem 3rem 8rem; }
+.shop-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:1.8rem; }
+.product-card {
+  background:var(--off);
+  border:1px solid rgba(13,12,11,0.07);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  transition:transform .35s,box-shadow .35s;
+}
+.product-card:hover { transform:translateY(-4px);box-shadow:0 16px 40px rgba(13,12,11,0.12); }
+.product-thumb {
+  aspect-ratio:1/1;
+  background:linear-gradient(135deg,var(--stone) 0%,var(--paper) 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.product-thumb::before {
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(13,12,11,0.08),rgba(242,237,230,0.25));
+}
+.product-thumb-mark {
+  font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;letter-spacing:-0.02em;
+  color:rgba(13,12,11,0.18);position:relative;z-index:1;text-align:center;line-height:1;
+}
+.product-cat-tag {
+  position:absolute;top:0.9rem;left:0.9rem;z-index:2;
+  font-family:'Syne',sans-serif;font-size:0.5rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--off);background:rgba(13,12,11,0.55);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  padding:0.4rem 0.7rem;
+}
+.product-info { padding:1.4rem 1.5rem 1.6rem;display:flex;flex-direction:column;gap:0.5rem;flex:1; }
+.product-name { font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;letter-spacing:-0.01em;color:var(--black);line-height:1.3; }
+.product-price { font-family:'Syne',sans-serif;font-weight:600;font-size:0.85rem;color:var(--mid); }
+.product-price span { color:var(--gold);font-weight:800; }
+.product-cta {
+  margin-top:0.6rem;
+  font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--off);background:var(--black);
+  text-align:center;padding:0.7rem;text-decoration:none;
+  transition:background .25s;
+}
+.product-cta:hover { background:var(--gold);color:var(--black); }
+
+/* SHOP CTA BAND */
+.shop-cta-band { background:var(--black);padding:6rem 3rem;text-align:center; }
+.shop-cta-hed { font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.8rem,3.5vw,3rem);color:var(--off);letter-spacing:-0.02em;margin-bottom:1.2rem; }
+.shop-cta-sub { font-size:0.85rem;color:var(--off);opacity:0.5;margin-bottom:2.2rem; }
+.shop-cta-btn { display:inline-block;font-family:'Syne',sans-serif;font-weight:800;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--black);background:var(--off);padding:1.2rem 3.5rem;text-decoration:none;transition:background .3s,color .3s; }
+.shop-cta-btn:hover { background:var(--gold); }
+
+/* FOOTER */
+footer { background:var(--deep);border-top:1px solid rgba(242,237,230,0.04);padding:6rem 3rem 4rem; }
+.footer-top { display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4rem;padding-bottom:5rem;border-bottom:1px solid rgba(242,237,230,0.06);margin-bottom:3rem; }
+.footer-brand { display:block;margin-bottom:1.5rem; }
+.footer-brand img { height:34px;width:auto;display:block; }
+.footer-tagline { font-size:0.78rem;line-height:1.85;color:var(--off);opacity:0.3;max-width:28ch; }
+.footer-col-head { font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--stone);opacity:0.6;margin-bottom:2rem; }
+.footer-links { list-style:none;display:flex;flex-direction:column;gap:1.1rem; }
+.footer-links a { font-size:0.8rem;color:var(--off);text-decoration:none;opacity:0.35;transition:opacity .25s,color .25s; }
+.footer-links a:hover { opacity:0.9;color:var(--stone); }
+.footer-bottom { display:flex;justify-content:space-between;align-items:center; }
+.footer-copy { font-size:0.58rem;letter-spacing:0.15em;color:var(--off);opacity:0.2; }
+.footer-social { display:flex;gap:2rem; }
+.footer-social a { font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--stone);opacity:0.4;text-decoration:none;transition:opacity .25s; }
+.footer-social a:hover { opacity:0.9; }
+
+/* MOBILE */
+@media(max-width:900px) {
+  nav { padding:1.2rem 1.5rem; }
+  .nav-right .nav-link { display:none; }
+  .nav-right .nav-book { display:none; }
+  .nav-toggle { display:flex; }
+  .shop-hero { padding:9rem 1.5rem 4rem; }
+  .shop-filters { padding:0 1.5rem 2.5rem;overflow-x:auto;flex-wrap:nowrap; }
+  .shop-grid-wrap { padding:3rem 1.5rem 6rem; }
+  .shop-grid { grid-template-columns:1fr 1fr;gap:1rem; }
+  .footer-top { grid-template-columns:1fr 1fr;gap:3rem; }
+  .footer-bottom { flex-direction:column;gap:1rem;text-align:center; }
+}
+@media(max-width:480px) {
+  .shop-grid { grid-template-columns:1fr; }
+  .footer-top { grid-template-columns:1fr;gap:2.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-mark"><img src="images/logo.png" alt="Lelani Hair & Beauty SA"></a>
+  <div class="nav-right">
+    <a href="index.html#about" class="nav-link">Story</a>
+    <a href="index.html#services" class="nav-link">Services</a>
+    <a href="index.html#gallery" class="nav-link">Work</a>
+    <a href="shop.html" class="nav-link active">Shop</a>
+    <a href="index.html#booking" class="nav-book">Book Now</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about">Story</a>
+  <a href="index.html#services">Services</a>
+  <a href="index.html#gallery">Work</a>
+  <a href="shop.html">Shop</a>
+  <a href="index.html#booking" class="mm-book">Book Now</a>
+</div>
+
+<!-- SHOP HERO -->
+<section class="shop-hero">
+  <span class="shop-hero-eyebrow">Tools & Supplies</span>
+  <h1 class="shop-hero-hed">The Shop</h1>
+  <p class="shop-hero-sub">Professional salon tools and haircare products — the same supplies we use in-studio, available for you to take home.</p>
+</section>
+
+<!-- FILTERS -->
+<div class="shop-filters" id="shopFilters">
+  <button class="filter-btn active" data-cat="all">All</button>
+  <button class="filter-btn" data-cat="adhesives">Adhesives & Glues</button>
+  <button class="filter-btn" data-cat="haircare">Haircare</button>
+  <button class="filter-btn" data-cat="styling">Styling Tools</button>
+  <button class="filter-btn" data-cat="accessories">Accessories</button>
+  <button class="filter-btn" data-cat="wigmaking">Wig Making</button>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="shop-grid-wrap">
+  <div class="shop-grid" id="shopGrid">
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">LACE<br>GLUE</span></div>
+      <div class="product-info">
+        <span class="product-name">Lace Glue</span>
+        <span class="product-price">R<span>100</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">GLAMOUR<br>GEL</span></div>
+      <div class="product-info">
+        <span class="product-name">Glamour Ultra Glued Styling Gel</span>
+        <span class="product-price">R<span>120</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">GLAMOUR<br>SPRAY</span></div>
+      <div class="product-info">
+        <span class="product-name">Glamour Spray</span>
+        <span class="product-price">R<span>170</span> each</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">GLAMOUR<br>SPRAY×2</span></div>
+      <div class="product-info">
+        <span class="product-name">Glamour Spray Combo</span>
+        <span class="product-price">R<span>440</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">EBIN<br>LACE BOND</span></div>
+      <div class="product-info">
+        <span class="product-name">Ebin Lace Bond</span>
+        <span class="product-price">R<span>400</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">GHOST<br>BOND</span></div>
+      <div class="product-info">
+        <span class="product-name">Ghost Bond Combo (Glue + Remover)</span>
+        <span class="product-price">R<span>300</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">GÖT2B<br>GLUED</span></div>
+      <div class="product-info">
+        <span class="product-name">Göt2b Spiking & Styling Glue</span>
+        <span class="product-price">R<span>700</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="adhesives">
+      <div class="product-thumb"><span class="product-cat-tag">Adhesives</span><span class="product-thumb-mark">GÖT2B<br>SPRAY</span></div>
+      <div class="product-info">
+        <span class="product-name">Göt2b Glue Spray</span>
+        <span class="product-price">R<span>250</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="haircare">
+      <div class="product-thumb"><span class="product-cat-tag">Haircare</span><span class="product-thumb-mark">ADORE<br>COLOR</span></div>
+      <div class="product-info">
+        <span class="product-name">Adore Hair Color</span>
+        <span class="product-price">R<span>265</span> each</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="haircare">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">SHIMMER<br>LIGHTS</span></div>
+      <div class="product-info">
+        <span class="product-name">Shimmer Lights Shampoo Combo</span>
+        <span class="product-price">R<span>1,450</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="haircare">
+      <div class="product-thumb"><span class="product-cat-tag">Haircare</span><span class="product-thumb-mark">BRASSINESS<br>SHAMPOO</span></div>
+      <div class="product-info">
+        <span class="product-name">Cynos Blondie+ Anti-Brassiness Shampoo</span>
+        <span class="product-price">R<span>300</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="haircare">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">ARGAN<br>OIL</span></div>
+      <div class="product-info">
+        <span class="product-name">Argan Oil Shampoo & Conditioner Combo</span>
+        <span class="product-price">R<span>1,800</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Styling</span><span class="product-thumb-mark">FANTASIA<br>MOUSSE</span></div>
+      <div class="product-info">
+        <span class="product-name">Fantasia Spritz Mousse</span>
+        <span class="product-price">Price on enquiry</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">SALON<br>COMBO</span></div>
+      <div class="product-info">
+        <span class="product-name">Salon Combo Bundle</span>
+        <span class="product-price">R<span>3,160</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">LACE MELT<br>COMBO</span></div>
+      <div class="product-info">
+        <span class="product-name">Glamour & YX Lace Melt Combo</span>
+        <span class="product-price">R<span>320</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Styling</span><span class="product-thumb-mark">WAX<br>STICK</span></div>
+      <div class="product-info">
+        <span class="product-name">Bed Head Wax Stick</span>
+        <span class="product-price">R<span>90</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">FLAT<br>IRON</span></div>
+      <div class="product-info">
+        <span class="product-name">Firmlite Flat Iron</span>
+        <span class="product-price">Price on enquiry</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">CURLING<br>IRON</span></div>
+      <div class="product-info">
+        <span class="product-name">Curling Iron (22 / 25 / 28 / 32mm)</span>
+        <span class="product-price">R<span>550</span> each</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">HOT<br>COMB</span></div>
+      <div class="product-info">
+        <span class="product-name">Super Hot Comb</span>
+        <span class="product-price">R<span>400</span> each</span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">HAIR<br>DRYER</span></div>
+      <div class="product-info">
+        <span class="product-name">Professional Hairdryer</span>
+        <span class="product-price">R<span>500</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">CORDLESS<br>CLIPPER</span></div>
+      <div class="product-info">
+        <span class="product-name">Professional Cordless Clipper</span>
+        <span class="product-price">R<span>550</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="styling">
+      <div class="product-thumb"><span class="product-cat-tag">Tools</span><span class="product-thumb-mark">TRIPLE<br>BARREL</span></div>
+      <div class="product-info">
+        <span class="product-name">Triple Barrel Curler</span>
+        <span class="product-price">R<span>600</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="accessories">
+      <div class="product-thumb"><span class="product-cat-tag">Accessories</span><span class="product-thumb-mark">WIG STORAGE<br>BAG</span></div>
+      <div class="product-info">
+        <span class="product-name">Hanger Wig Storage Bag</span>
+        <span class="product-price">R<span>100</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="accessories">
+      <div class="product-thumb"><span class="product-cat-tag">Accessories</span><span class="product-thumb-mark">DRYER<br>HEAD</span></div>
+      <div class="product-info">
+        <span class="product-name">Wig Dryer Head</span>
+        <span class="product-price">R<span>550</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="wigmaking">
+      <div class="product-thumb"><span class="product-cat-tag">Wig Making</span><span class="product-thumb-mark">DISPLAY<br>MANNEQUIN</span></div>
+      <div class="product-info">
+        <span class="product-name">Display Mannequin Head</span>
+        <span class="product-price">R<span>400</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="wigmaking">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">WIG MAKING<br>COMBO</span></div>
+      <div class="product-info">
+        <span class="product-name">Wig Making Combo (Big Tripod)</span>
+        <span class="product-price">R<span>1,200</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="wigmaking">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">WIG MAKING<br>COMBO</span></div>
+      <div class="product-info">
+        <span class="product-name">Wig Making Combo</span>
+        <span class="product-price">R<span>750</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+    <div class="product-card" data-cat="wigmaking">
+      <div class="product-thumb"><span class="product-cat-tag">Combo</span><span class="product-thumb-mark">WIG MAKING<br>COMBO</span></div>
+      <div class="product-info">
+        <span class="product-name">Wig Making Combo (Small Tripod)</span>
+        <span class="product-price">R<span>900</span></span>
+        <a href="tel:+27678509066" class="product-cta">Enquire to Order</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA BAND -->
+<div class="shop-cta-band">
+  <h2 class="shop-cta-hed">Can't find what you need?</h2>
+  <p class="shop-cta-sub">Message us directly — we'll help you find the right product or tool.</p>
+  <a href="https://wa.me/27678509066" target="_blank" class="shop-cta-btn">Message on WhatsApp</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-brand"><img src="images/logo.png" alt="Lelani Hair & Beauty SA"></span>
+      <p class="footer-tagline">Your beauty is our top priority. Located in Crystal Park, Benoni — serving the East Rand with precision and care.</p>
+    </div>
+    <div>
+      <p class="footer-col-head">Navigate</p>
+      <ul class="footer-links">
+        <li><a href="index.html#about">Our Story</a></li>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="index.html#gallery">Our Work</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-head">Shop Categories</p>
+      <ul class="footer-links">
+        <li><a href="#" onclick="filterShop('adhesives');return false;">Adhesives & Glues</a></li>
+        <li><a href="#" onclick="filterShop('haircare');return false;">Haircare</a></li>
+        <li><a href="#" onclick="filterShop('styling');return false;">Styling Tools</a></li>
+        <li><a href="#" onclick="filterShop('wigmaking');return false;">Wig Making</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-head">Find Us</p>
+      <ul class="footer-links">
+        <li><a href="#">15 Conway St, Crystal Park</a></li>
+        <li><a href="#">Benoni, 1515, South Africa</a></li>
+        <li><a href="tel:+27678509066">+27 67 850 9066</a></li>
+        <li><a href="https://instagram.com/LelaniHairBeauty_sa" target="_blank">@LelaniHairBeauty_sa</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Lelani Hair & Beauty SA. All rights reserved.</span>
+    <div class="footer-social">
+      <a href="https://instagram.com/LelaniHairBeauty_sa" target="_blank">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="tel:+27678509066">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* MOBILE MENU TOGGLE */
+const navToggle=document.getElementById('navToggle');
+const mobileMenu=document.getElementById('mobileMenu');
+navToggle.addEventListener('click',()=>{
+  navToggle.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click',()=>{
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+/* FILTERS */
+const filterBtns=document.querySelectorAll('.filter-btn');
+const productCards=document.querySelectorAll('.product-card');
+function filterShop(cat){
+  filterBtns.forEach(b=>b.classList.toggle('active', b.dataset.cat===cat));
+  productCards.forEach(card=>{
+    card.style.display = (cat==='all' || card.dataset.cat===cat) ? 'flex' : 'none';
+  });
+  document.getElementById('shopFilters').scrollIntoView({behavior:'smooth',block:'start'});
+}
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>filterShop(btn.dataset.cat));
+});
+</script>
+</body>
+</html>
